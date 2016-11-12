@@ -1,0 +1,106 @@
+<div style="width: 100%; height: 100%">
+    <div data-dojo-type="dijit/layout/StackContainer" style="width: 100%; height: 100%;" data-dojo-attach-point="_tabContainer">
+        <div data-dojo-type="dijit/layout/ContentPane" title="List" data-dojo-props="selected:true" data-dojo-attach-point="_userListPane">
+            
+            <div data-dojo-type="dijit/layout/LayoutContainer" >
+            	
+		        <div data-dojo-type="dojox/layout/TableContainer" data-dojo-props="cols:2, region:'top'">
+					<div data-dojo-type="dijit/form/TextBox" title="User Name:" value="" data-dojo-attach-point="_criUserName"></div>
+				    <div data-dojo-type="dijit/form/TextBox" title="User Desc:" value="" data-dojo-attach-point="_criUserDesc"></div>
+				</div>
+				
+				<div data-dojo-type="dijit/layout/ContentPane" align="right" data-dojo-props="region:'top'">
+					<button data-dojo-type="dijit/form/Button" type="button" data-dojo-attach-point="_searchButton">Search
+										
+					</button>
+				</div>  
+				         
+				<div data-dojo-type="dijit/layout/ContentPane" data-dojo-attach-point="_searchResult"  data-dojo-props="region:'center'">
+				</div> 
+				<div data-dojo-type="dijit/layout/ContentPane" align="right" data-dojo-props="region:'bottom'">
+					<button data-dojo-type="dijit/form/Button" type="button" data-dojo-attach-point="_newButton">New</button>
+					<button data-dojo-type="dijit/form/Button" type="button" data-dojo-attach-point="_editButton">Edit</button>
+					<button data-dojo-type="dijit/form/Button" type="button" data-dojo-attach-point="_deleteButton">Delete</button>
+				</div>  
+			</div>
+            
+        </div>
+        <div data-dojo-type="dijit/layout/ContentPane" title="Detail" data-dojo-attach-point="_detailPane">
+        	<div data-dojo-type="dijit/form/Form" data-dojo-attach-point="_userForm">
+	        	<table>
+	        		<tr>
+	        			<td>
+	        			<label for="userName">User Name:</label>
+	        			</td>
+	        			<td>
+						<input data-dojo-attach-point="_userName" data-dojo-type="dijit/form/TextBox" name="userName" type="text" maxlength="100"></input>
+						</td>
+					</tr>
+					<tr>
+	        			<td>
+	        			<label for="userDesc">User Description:</label>
+	        			</td>
+	        			<td>
+						<input data-dojo-type="dijit/form/TextBox" name="userDescription" type="text" maxlength="200"></input>
+						</td>
+					</tr>
+					<tr>
+	        			<td>
+	        			<label for="password">Password:</label>
+	        			</td>
+	        			<td>
+						<div data-dojo-attach-point="_password" data-dojo-type="dijit/form/TextBox" name="password" type="password" maxlength="200"></div>
+						</td>
+					</tr>
+					<tr>
+	        			<td>
+	        			<label for="confirmedPassword">Confirmed Password:</label>
+	        			</td>
+	        			<td>
+						<div data-dojo-attach-point="_confirmedPassword" data-dojo-type="dijit/form/TextBox" name="confirmedPassword" type="password" maxlength="200"></div>
+						</td>
+					</tr>
+					
+					<tr>
+	        			<td>
+	        				<div>Roles:</div>
+	        				<div>
+	        					<select data-dojo-attach-point="_roleList" data-dojo-type="dijit/form/MultiSelect" name="roles" size="14" style="width:100%">
+	        					</select>
+	        				</div>
+	        				<div data-dojo-type="dijit/layout/ContentPane" align="left" data-dojo-props="region:'bottom'">
+	        					<button data-dojo-type="dijit/form/Button" type="button" data-dojo-attach-point="_addRoleButton">+</button>
+	        					<button data-dojo-type="dijit/form/Button" type="button" data-dojo-attach-point="_deleteRoleButton">-</button>
+	        				</div>	
+	        				
+	        			</td>
+	        			<td>
+						
+						</td>
+					</tr>
+					
+				</table>
+				<div data-dojo-type="dijit/layout/ContentPane" align="right" data-dojo-props="region:'bottom'">
+					<button data-dojo-type="dijit/form/Button" type="button" data-dojo-attach-point="_backButton">Back</button>
+					<button data-dojo-type="dijit/form/Button" type="button" data-dojo-attach-point="_saveButton">Save</button>
+				</div>  
+				
+				
+			</div>
+			<div data-dojo-type="dijit/Dialog" data-dojo-attach-point="_roleSearchDialog" title="Roles">
+				<div class="dijitDialogPaneContentArea" >
+					<div data-dojo-type="dijit/layout/ContentPane" data-dojo-attach-point="_roleTreePane" style="width:500px; height:600px">
+					<!-- the role tree will be placed at here-->
+					</div>
+				</div>
+				 <div class="dijitDialogPaneActionBar">
+					 <button data-dojo-type="dijit/form/Button" type="button" data-dojo-attach-point="_selectRoleDialogButton">Select</button>
+					 <button data-dojo-type="dijit/form/Button" type="button" data-dojo-attach-point="_closeRoleDialogButton">Close</button>
+				 </div>
+				
+			</div>
+			
+        </div>
+        
+    </div>
+</div>

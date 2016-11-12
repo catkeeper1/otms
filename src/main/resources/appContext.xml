@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+	   		http://www.springframework.org/schema/beans
+        	http://www.springframework.org/schema/beans/spring-beans.xsd
+        	http://www.springframework.org/schema/context
+        	http://www.springframework.org/schema/context/spring-context.xsd
+        	http://www.springframework.org/schema/tx
+     		http://www.springframework.org/schema/tx/spring-tx.xsd
+     		http://www.springframework.org/schema/mvc
+        	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        	http://www.springframework.org/schema/aop 
+        	http://www.springframework.org/schema/aop/spring-aop.xsd" 
+	default-lazy-init="true">
+
+	<import resource="securityContext.xml" />
+	<!-- import resource="webFilterContext.xml" />  -->
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://127.0.0.1/otms" />
+		<property name="username" value="root" />
+		<property name="password" value="" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="com.ckr.otms"></property>
+
+		<property name="hibernateProperties">
+			<value>
+			    hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+			    hibernate.show_sql=true
+			    <!-- this must be on_close, otherwise cannot change isolate level -->
+                hibernate.connection.release_mode=on_close
+			</value>
+		</property>
+	</bean>
+
+	<!-- Post-processor to perform exception translation on @Repository classes 
+		(from native exceptions such as JPA PersistenceExceptions to Spring's DataAccessException 
+		hierarchy). -->
+	<bean
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<qualifier value="base" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <!-- the transactional semantics... -->
+        <tx:attributes>
+            <!-- all methods starting with 'get' are read-only -->
+            <tx:method name="query*" read-only="true"/>
+            <!-- other methods use the default transaction settings (see below) -->
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    
+    
+	
+
+	<context:component-scan base-package="com.ckr.otms">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+
+		<property name="basenames">
+			<list>
+				<value>/WEB-INF/messages/SysMessage</value>
+				<value>/WEB-INF/messages/SecurityMessage</value>
+			</list>
+		</property>
+		<property name="cacheSeconds" value="5" />
+		<property name="useCodeAsDefaultMessage" value="true" />
+	</bean>
+	
+	<bean id="restPaginationService" 
+	    class="com.ckr.otms.common.bo.HibernateRestPaginationService">
+	    <property name="sessionFactory" ref="sessionFactory" />
+	    
+	</bean>
+	
+	<aop:config>
+        <aop:pointcut id="restPaginationPointCut" expression="bean(restPaginationService)"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="restPaginationPointCut"/>
+    </aop:config>
+
+</beans>        	
