@@ -378,7 +378,19 @@
 								<!-- <get src="http://download.dojotoolkit.org/release-1.10.0/dojo-release-1.10.0.zip" 
 									dest="${basedir}/download_cache/dojo-release-1.10.0.zip" skipexisting="true" 
 									verbose="true" /> -->
-
+								
+								<available file="${basedir}/download_cache"	property="download_cache_dir_exist" type="dir" />
+								
+								<if>
+									<isset property="download_cache_dir_exist" />
+									<then>
+										<echo>download_cache folder has been created</echo>
+									</then>
+									<else>
+										<mkdir dir="${basedir}/download_cache" />
+									</else>
+								</if>
+								
 								<get
 									src="http://download.dojotoolkit.org/release-1.10.0/dojo-release-1.10.0-src.tar.gz"
 									dest="${basedir}/download_cache/dojo-release-1.10.0-src.tar.gz"
