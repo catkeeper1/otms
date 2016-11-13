@@ -1,0 +1,10 @@
+{
+	"name": "app",
+	"version":"1.0.0",
+	"directories": {
+		"lib": "."
+	},
+	"main": "MainAppFrame",
+	"description": "OTMS is an order management system",
+	"dojoBuild": "otms.profile.js"
+}

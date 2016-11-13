@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+			xmlns:beans="http://www.springframework.org/schema/beans" 
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://www.springframework.org/schema/beans
+           		http://www.springframework.org/schema/beans/spring-beans.xsd
+           		http://www.springframework.org/schema/security
+           		http://www.springframework.org/schema/security/spring-security.xsd">
+
+
+	<http pattern="/pub/**" security="none" create-session="never"/>
+
+	<http authentication-manager-ref="internalAuthenticationManager" use-expressions="true" entry-point-ref="internalAuthenticationEntryPoint">
+		<intercept-url pattern='/iwd/**' access='permitAll' />
+		<intercept-url pattern='/*.do' access='permitAll' />
+		<form-login default-target-url='/mainPage.do' 
+					always-use-default-target='true' 
+					login-processing-url="/doAuthentication.do"
+					username-parameter="username" 
+					password-parameter="password"
+					authentication-failure-handler-ref="internalAuthenticationFailedHandler"/>
+	</http>
+	
+	<beans:bean id="internalAuthenticationEntryPoint" 
+	    class ="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+	    <beans:property name="loginFormUrl" value="/startAuthentication.do"/>
+	    <beans:property name="useForward" value="true"/>
+	</beans:bean>
+	
+	<beans:bean id="internalAuthenticationFailedHandler" 
+	    class ="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+	    <beans:property name="UseForward" value="true"/>
+	    <beans:property name="defaultFailureUrl" value="/loginFailure.do"/>
+	</beans:bean>
+	
+		
+	<authentication-manager id="internalAuthenticationManager">
+  		<authentication-provider user-service-ref="internalUserDetailsService" />
+	</authentication-manager>
+	
+	<beans:bean id="internalDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+		<beans:property name="allowIfAllAbstainDecisions"  
+            value="false" />
+		<beans:property name="decisionVoters">  
+            <beans:list>  
+                <beans:bean class="com.ckr.otms.secuirty.util.AuthenticatedVoter" />
+                <beans:bean class="com.ckr.otms.secuirty.util.InternalControllerVoter" />    
+            </beans:list>  
+        </beans:property>
+	</beans:bean>
+	
+	
+</beans:beans>
