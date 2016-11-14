@@ -23,6 +23,7 @@
 	-->
 
 	<properties>
+		<ut_path>a_not_valid_path/*.java</ut_path>
 		<at_path>a_not_valid_path/*.java</at_path>
 	</properties>
 
@@ -42,7 +43,20 @@
 				<compile.js>false</compile.js>
 			</properties>
 		</profile>
-		
+
+		<profile>
+			<id>active_ut</id>
+			<activation>
+				<property>
+					<name>active_ut</name>
+					<value>Y</value>
+				</property>
+			</activation>
+			<properties>
+				<ut_path>com/ckr/otms/ut/**/*.java</ut_path>
+			</properties>
+		</profile>
+
 		<profile>
 			<id>active_at</id>
 			<activation>
@@ -319,7 +333,7 @@
 						<phase>test</phase>
 						<configuration>
           					<includes>
-            					<includea>com/ckr/otms/ut/**/*.java</includea>
+            					<includea>${ut_path}</includea>
           					</includes>
           					<skipTests>false</skipTests>
         				</configuration>
