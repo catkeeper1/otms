@@ -12,7 +12,7 @@
 
 
 
-	<!-- fsafasdfsadf
+	<!--
 	<repositories>
     	<repository>
         	<id>io.spring.repo.maven.release</id>
@@ -489,11 +489,8 @@
 								<taskdef resource="net/sf/antcontrib/antlib.xml"
 									classpathref="maven.plugin.classpath" />
 
-
-								<property name="compile_js" value="${compile.js}" />
-
 								<if>
-									<equals arg1="${compile_js}" arg2="true" />
+									<equals arg1="${compile.js}" arg2="true" />
 
 									<then>
 
@@ -540,10 +537,9 @@
 									classpathref="maven.plugin.classpath" />
 
 
-								<property name="compile_js" value="${compile.js}" />
 
 								<if>
-									<equals arg1="${compile_js}" arg2="true" />
+									<equals arg1="${compile.js}" arg2="true" />
 
 									<then>
 
