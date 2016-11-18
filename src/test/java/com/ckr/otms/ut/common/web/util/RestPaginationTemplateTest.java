@@ -67,8 +67,8 @@ public class RestPaginationTemplateTest {
 			//invoke(pageUtil, "parsePageRange", new Class<?>[]{QueryRequest.class, HttpServletRequest.class}, (QueryRequest)any, request);
 			//times = 1;
 
-			invoke(pageUtil,"parseSortBy", new Class<?>[]{QueryRequest.class, HttpServletRequest.class}, (QueryRequest)any, request);
-			times = 1;
+			//invoke(pageUtil,"parseSortBy", new Class<?>[]{QueryRequest.class, HttpServletRequest.class}, (QueryRequest)any, request);
+			//times = 1;
 
 			pageUtil.generateResponse((QueryResponse) any);
 			this.result = expectedResult;
