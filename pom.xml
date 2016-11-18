@@ -23,6 +23,7 @@
 	-->
 
 	<properties>
+		<ut_path>a_not_valid_path/*.java</ut_path>
 		<at_path>a_not_valid_path/*.java</at_path>
 	</properties>
 
@@ -42,7 +43,27 @@
 				<compile.js>false</compile.js>
 			</properties>
 		</profile>
-		
+
+        <profile>
+            <id>active_coverage</id>
+            <dependencies>
+
+            </dependencies>
+        </profile>
+
+		<profile>
+			<id>active_ut</id>
+			<activation>
+				<property>
+					<name>active_ut</name>
+					<value>Y</value>
+				</property>
+			</activation>
+			<properties>
+				<ut_path>com/ckr/otms/ut/**/*.java</ut_path>
+			</properties>
+		</profile>
+
 		<profile>
 			<id>active_at</id>
 			<activation>
@@ -151,11 +172,11 @@
 			<scope>compile</scope>
 		</dependency>
 
-<dependency>
-    <groupId>org.hibernate.javax.persistence</groupId>
-    <artifactId>hibernate-jpa-2.1-api</artifactId>
-    <version>1.0.0.Final</version> 
-</dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.0.Final</version>
+        </dependency>
 
 
 		<dependency>
@@ -253,14 +274,18 @@
 		<dependency>
 			<groupId>org.jmockit</groupId>
 			<artifactId>jmockit</artifactId>
-			<version>1.8</version>
+			<version>1.29</version>
 			<scope>test</scope>
 		</dependency>
 		
-		<!-- 
-		<dependency> <groupId>org.jmockit</groupId> <artifactId>jmockit-coverage</artifactId> 
-			<version>0.999.27</version> <scope>test</scope> </dependency> 
- 		-->
+
+		<dependency>
+            <groupId>org.jmockit</groupId>
+            <artifactId>jmockit-coverage</artifactId>
+			<version>1.23</version>
+            <scope>test</scope>
+        </dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -319,7 +344,7 @@
 						<phase>test</phase>
 						<configuration>
           					<includes>
-            					<includea>com/ckr/otms/ut/**/*.java</includea>
+            					<includea>${ut_path}</includea>
           					</includes>
           					<skipTests>false</skipTests>
         				</configuration>
@@ -675,4 +700,18 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<showSuccess>true</showSuccess>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+
 </project>

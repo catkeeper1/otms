@@ -9,7 +9,9 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 
+import mockit.integration.junit4.JMockit;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -20,12 +22,12 @@ import com.ckr.otms.common.web.util.RestPaginationTemplate;
 import com.ckr.otms.common.web.util.RestPaginationTemplate.QueryRequest;
 import com.ckr.otms.common.web.util.RestPaginationTemplate.QueryResponse;
 
-import mockit.Cascading;
+
 import mockit.Expectations;
 import mockit.Mocked;
-import mockit.NonStrictExpectations;
 
 
+@RunWith(JMockit.class)
 public class RestPaginationTemplateTest {
 	
 	private @Mocked RequestContextHolder requestContextHolder;
@@ -33,7 +35,7 @@ public class RestPaginationTemplateTest {
 	private @Mocked ServletRequestAttributes servletRequestAttributes;
 	
 	@Test
-	public void testParsePageRange(final @Cascading HttpServletRequest request){
+	public void testParsePageRange(final @Mocked HttpServletRequest request){
 		
 		final RestPaginationTemplate pageUtil = new RestPaginationTemplate(){
 
@@ -50,7 +52,7 @@ public class RestPaginationTemplateTest {
 		
 		final ResponseEntity<Collection<Object>> expectedResult = new ResponseEntity<Collection<Object>>(new ArrayList<Object>(), HttpStatus.OK);
 		
-		new NonStrictExpectations(RestPaginationTemplate.class){{
+		new Expectations(){{
 			
 			RequestContextHolder.getRequestAttributes(); result = servletRequestAttributes;
 			
@@ -60,15 +62,16 @@ public class RestPaginationTemplateTest {
 		
 		
 		new Expectations(RestPaginationTemplate.class){{
-			
-			invoke(pageUtil, "parsePageRange", new Class<?>[]{QueryRequest.class, HttpServletRequest.class}, (QueryRequest)any, request); 
+
+
+			//invoke(pageUtil, "parsePageRange", new Class<?>[]{QueryRequest.class, HttpServletRequest.class}, (QueryRequest)any, request);
+			//times = 1;
+
+			invoke(pageUtil,"parseSortBy", new Class<?>[]{QueryRequest.class, HttpServletRequest.class}, (QueryRequest)any, request);
 			times = 1;
-			
-			invoke(pageUtil,"parseSortBy", new Class<?>[]{QueryRequest.class, HttpServletRequest.class}, (QueryRequest)any, request);			
-			times = 1;
-			
+
 			pageUtil.generateResponse((QueryResponse) any);
-			this.result = expectedResult; 
+			this.result = expectedResult;
 			
 		}};
 		
