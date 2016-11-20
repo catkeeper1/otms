@@ -1,86 +1,96 @@
 package com.ckr.otms.ut.common.web.util;
 
 import static mockit.Deencapsulation.invoke;
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.junit.Assert.assertThat;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 
-import mockit.integration.junit4.JMockit;
+import com.ckr.otms.ut.common.InvokedCounter;
+import mockit.*;
+
+
+import org.hibernate.annotations.Cascade;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.context.request.WebRequest;
+
 
 import com.ckr.otms.common.web.util.RestPaginationTemplate;
 import com.ckr.otms.common.web.util.RestPaginationTemplate.QueryRequest;
 import com.ckr.otms.common.web.util.RestPaginationTemplate.QueryResponse;
 
+import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
-import mockit.Expectations;
-import mockit.Mocked;
 
-
-@RunWith(JMockit.class)
 public class RestPaginationTemplateTest {
 	
 	private @Mocked RequestContextHolder requestContextHolder;
 	
 	private @Mocked ServletRequestAttributes servletRequestAttributes;
-	
+
+    private @Mocked HttpServletRequest httpServletRequest;
+
 	@Test
-	public void testParsePageRange(final @Mocked HttpServletRequest request){
-		
-		final RestPaginationTemplate pageUtil = new RestPaginationTemplate(){
+	public void testParsePageRange(){
 
-			@Override
-			protected QueryResponse doQuery() {
-				// TODO Auto-generated method stub
-				return null;
-			}
 
-			 
-		};
-		
-		final RestPaginationTemplateTest t = this;
-		
 		final ResponseEntity<Collection<Object>> expectedResult = new ResponseEntity<Collection<Object>>(new ArrayList<Object>(), HttpStatus.OK);
-		
+
+        final HttpServletRequest httpReq = new MockUp<HttpServletRequest>(){}.getMockInstance();
+
 		new Expectations(){{
-			
-			RequestContextHolder.getRequestAttributes(); result = servletRequestAttributes;
-			
-			servletRequestAttributes.getRequest(); result = request;
-			
+
+            ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+
+            result = httpReq;
+
 		}};
-		
-		
-		new Expectations(RestPaginationTemplate.class){{
 
 
-			//invoke(pageUtil, "parsePageRange", new Class<?>[]{QueryRequest.class, HttpServletRequest.class}, (QueryRequest)any, request);
-			//times = 1;
+        final InvokedCounter counter = new InvokedCounter();
 
-			//invoke(pageUtil,"parseSortBy", new Class<?>[]{QueryRequest.class, HttpServletRequest.class}, (QueryRequest)any, request);
-			//times = 1;
+        final RestPaginationTemplate pageUtil = new MockUp<RestPaginationTemplate<Object>>(){
+            @Mock
+            protected QueryResponse<Object> doQuery(){
+                return new QueryResponse<Object>();
+            }
 
-			pageUtil.generateResponse((QueryResponse) any);
-			this.result = expectedResult;
-			
-		}};
-		
+            @Mock
+            protected QueryRequest parsePageRange(QueryRequest range, HttpServletRequest webRequest){
+                counter.countInvoke("parsePageRange");
+                return range;
+            }
+
+            @Mock
+            protected QueryRequest parseSortBy(QueryRequest request, HttpServletRequest webRequest){
+                counter.countInvoke("parseSortBy");
+                return request;
+            }
+
+            @Mock
+            ResponseEntity<Collection<Object>> generateResponse(QueryResponse<Object> contentRange){
+                return expectedResult;
+            }
+
+        }.getMockInstance();
+
 		ResponseEntity<Collection<Object>> testResult = pageUtil.query();
+
+        assertThat(testResult, sameInstance(expectedResult));
+
+        assertThat(counter.getInvokeCount("parsePageRange"), equalTo(1));
+        assertThat(counter.getInvokeCount("parseSortBy"), equalTo(1));
 		
-		
-		
-		assertThat(testResult , sameInstance(expectedResult));
-		
-		
+
 	}
+
+
+
 }
