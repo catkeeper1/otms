@@ -114,7 +114,7 @@ public abstract class RestPaginationTemplate<R> {
 		
 		return range;
 	}
-	
+
 	
 	protected QueryRequest parseSortBy(QueryRequest request, HttpServletRequest webRequest){
 		
