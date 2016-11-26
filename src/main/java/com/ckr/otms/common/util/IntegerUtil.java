@@ -4,7 +4,7 @@ public class IntegerUtil {
 	public static Integer parse(String str){
 		
 		try{
-			return new Integer(str);
+			return Integer.valueOf(str);
 		}catch(NumberFormatException e){
 			return null;
 		}

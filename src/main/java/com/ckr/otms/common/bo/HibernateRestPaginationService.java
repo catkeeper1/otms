@@ -176,10 +176,11 @@ public class HibernateRestPaginationService {
 		if(params == null){
 			return;
 		}
-		
-		for(String paramName: params.keySet()){
-			query.setParameter(paramName, params.get(paramName));
-		}
+
+		params.entrySet()
+			  .stream()
+			  .forEach(e -> query.setParameter(e.getKey(), e.getValue()));
+
 	}
 	
 	private String appendSortCriteria(String queryString, QueryRequest request){
@@ -267,29 +268,8 @@ public class HibernateRestPaginationService {
 		
 	}
 	
-	protected Map<String, Object> adjustQueryParams(Map<String, Object> params){
-		
-		
-		
-		if(params == null){
-			params = new HashMap<String, Object>();
-			return params;
-		}
-		
-		Set<String> removedKeySet = new HashSet<String>();
-		
-		for(String key: params.keySet()){
-			if(params.get(key) == null){
-				removedKeySet.add(key);				
-			}
-		}
-		
-		for(String key: removedKeySet){
-			params.remove(key);
-		}
-		
-		
-		return params;
-	}
-	
+
+
+
+
 }

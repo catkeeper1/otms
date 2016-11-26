@@ -44,12 +44,6 @@
 			</properties>
 		</profile>
 
-        <profile>
-            <id>active_coverage</id>
-            <dependencies>
-
-            </dependencies>
-        </profile>
 
 		<profile>
 			<id>active_ut</id>
@@ -297,6 +291,7 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
             <version>1.3</version>
+			<scope>test</scope>
         </dependency>
 
 		<dependency>
@@ -314,7 +309,8 @@
 
 
 		<plugins>
-			<!-- <plugin> <groupId>com.googlecode.maven-download-plugin</groupId> 
+
+			<!-- <plugin> <groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>download-maven-plugin</artifactId> <version>1.2.0</version> <executions> 
 				<execution> <id>download-dojo</id> <phase>generate-sources</phase> <goals> 
 				<goal>wget</goal> </goals> <configuration> <url>http://download.dojotoolkit.org/release-1.10.0/dojo-release-1.10.0.tar.gz</url> 
@@ -337,8 +333,6 @@
         		<artifactId>maven-surefire-plugin</artifactId>
         		<version>2.19.1</version>
         		<configuration>
-					<skipTests>false</skipTests>
-					
 				</configuration>
         		
         		<executions>
@@ -353,7 +347,15 @@
             					<includea>${ut_path}</includea>
           					</includes>
           					<skipTests>false</skipTests>
-        				</configuration>
+							<systemPropertyVariables>
+							<!-- At least one of the following needs to be set: -->
+								<coverage-output>html</coverage-output>
+								<coverage-metrics>line</coverage-metrics>
+								<coverage-srcDirs>${project.basedir}/src/main/java</coverage-srcDirs>
+                                <coverage-classes>loaded</coverage-classes>
+							</systemPropertyVariables>
+
+						</configuration>
 						<goals>
 							<goal>test</goal>
 						</goals>
@@ -361,7 +363,7 @@
 						
 					</execution>
 					
-					<!-- execute AT -->
+					<!-- execute AT
 					<execution>
 						<phase>test</phase>
 						<configuration>
@@ -369,11 +371,16 @@
             					<includea>${at_path}</includea>
           					</includes>
           					<skipTests>false</skipTests>
-        				</configuration>
+							<systemPropertyVariables>
+
+								<coverage-output>none</coverage-output>
+							</systemPropertyVariables>
+						</configuration>
 						<goals>
 							<goal>test</goal>
 						</goals>
 					</execution>
+		-->
 					
 				</executions>
         		
@@ -384,20 +391,6 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.7</version>
 				<executions>
-					<execution>
-						<id>clean_js_res</id>
-						<phase>clean</phase>
-						<configuration>
-							<target>
-								<!-- <delete dir="${basedir}/src/main/webapp/pub/dojo"/> -->
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-
-
 
 					<execution>
 						<id>create_js_res</id>
@@ -709,6 +702,16 @@
 
 	<reporting>
 		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
@@ -717,6 +720,17 @@
 					<showSuccess>true</showSuccess>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>3.0.4</version>
+				<configuration>
+					<omitVisitors>FindReturnRef</omitVisitors>
+					<effort>max</effort>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</reporting>
 

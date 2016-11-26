@@ -113,9 +113,9 @@ public class BaseException extends RuntimeException {
     	
     	private Object[] messageParams=null;
     	
-    	public ExceptionMessage(){
+    	/*public ExceptionMessage(){
     		super();
-    	}
+    	}*/
     	
     	public ExceptionMessage(String code, Object[] params){
     		messageCode = code;

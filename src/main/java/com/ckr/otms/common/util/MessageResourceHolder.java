@@ -19,7 +19,7 @@ public class MessageResourceHolder {
 	
 	@Autowired
 	@Qualifier("messageSource")
-	public void setMessageSource(AbstractMessageSource messageSource) {
+	public static void setMessageSource(AbstractMessageSource messageSource) {
 		MessageResourceHolder.messageSource = messageSource;
 	}
 

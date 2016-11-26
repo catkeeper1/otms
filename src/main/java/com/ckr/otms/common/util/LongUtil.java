@@ -4,7 +4,7 @@ public class LongUtil {
 	public static Long parse(String str){
 		
 		try{
-			return new Long(str);
+			return Long.valueOf(str);
 		}catch(NumberFormatException e){
 			return null;
 		}
