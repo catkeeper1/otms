@@ -1,6 +1,8 @@
 package com.ckr.otms.common.web.util;
 
+
 import com.ckr.otms.common.util.LongUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -9,20 +11,30 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.StringTokenizer;
+import javax.servlet.http.HttpServletRequest;
 
 public abstract class RestPaginationTemplate<R> {
 
     private static final Logger LOG = LoggerFactory.getLogger(RestPaginationTemplate.class);
 
     private static final ThreadLocal<QueryRequest> queryPagingInfo =
-            new ThreadLocal<QueryRequest>();
+            new ThreadLocal<>();
 
+    /**
+     * Trigger the query base on the query logic that is implemented in
+     * {@link com.ckr.otms.common.web.util.RestPaginationTemplate#doQuery()}.
+     *
+     *
+     *
+     * @return
+     *
+     * @see com.ckr.otms.common.web.util.RestPaginationTemplate#doQuery()
+     */
     public ResponseEntity<Collection<R>> query() {
 
         HttpServletRequest webRequest =
@@ -63,6 +75,7 @@ public abstract class RestPaginationTemplate<R> {
 
     /**
      * Th
+     *
      * @return QueryResponse<R>
      */
     protected abstract QueryResponse<R> doQuery();
