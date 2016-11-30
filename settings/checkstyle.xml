@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
 
+
 <!--
-    This configuration file was written by the eclipse-cs plugin configuration editor
--->
-<!--
-    Checkstyle-Configuration: Copy of Google Checks
-    Description: 
-Checkstyle configurartion that checks the Google coding conventions (https://google-styleguide.googlecode.com/svn-history/r130/trunk/javaguide.html).
+This checkstyle configurartion base on google checkstyle config file which is exported from eclipse checkstyle plugin.
 -->
 <module name="Checker">
   <property name="severity" value="warning"/>
@@ -126,11 +122,11 @@ Checkstyle configurartion that checks the Google coding conventions (https://goo
     </module>
     <module name="OverloadMethodsDeclarationOrder"/>
     <module name="VariableDeclarationUsageDistance"/>
-    <!--module name="CustomImportOrder">
+    <module name="CustomImportOrder">
       <property name="customImportOrderRules" value="STATIC###SPECIAL_IMPORTS###THIRD_PARTY_PACKAGE###STANDARD_JAVA_PACKAGE"/>
-      <property name="specialImportsRegExp" value="com.ckr.otms"/>
+      <property name="specialImportsRegExp" value="com.ckr.otms"/> <!-- change special import to package for current project -->
       <property name="sortImportsInGroupAlphabetically" value="true"/>
-    </module-->
+    </module>
     <module name="MethodParamPad"/>
     <module name="OperatorWrap">
       <property name="option" value="NL"/>
