@@ -23,6 +23,11 @@
 	-->
 
 	<properties>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+
 		<ut_path>a_not_valid_path/*.java</ut_path>
 		<at_path>a_not_valid_path/*.java</at_path>
 	</properties>
