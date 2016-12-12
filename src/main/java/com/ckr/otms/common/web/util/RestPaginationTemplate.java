@@ -28,19 +28,17 @@ import javax.servlet.http.HttpServletRequest;
  * class and provide implementation for {@link RestPaginationTemplate#doQuery()}.</p>
  * <p>The {@link RestPaginationTemplate#query()} method can return a {@link ResponseEntity} object which can
  * be used as returned value for a Spring MVC controller method. The usage of this class is similar to:</p>
- * {@code
-        return new RestPaginationTemplate<ResultType>() {
-
-
-           protected QueryResponse<ResultType> doQuery() {
-
-               QueryResponse<ResultType> result = ...; //statement that can do real data query.
-
-               return result;
-           }
-
-       }.query();
-    }
+ * <pre>
+ * <code>
+ *  return new RestPaginationTemplate&lt;ResultType&gt;() {
+ *      &#064;Override
+ *      protected QueryResponse&lt;ResultType&gt; doQuery() {
+ *          QueryResponse&lt;ResultType&gt; result = ...; //statement that can do real data query.
+ *          return result;
+ *      }
+ *  }.query();
+ * </code>
+ * </pre>
  * <p>Please note that this class is designed for Spring MVC only, it will not work if you use it under other
  * environments(such as Servlet, Struts).</p>
  *
