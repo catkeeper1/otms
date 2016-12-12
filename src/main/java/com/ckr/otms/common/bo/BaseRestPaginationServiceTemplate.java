@@ -6,13 +6,9 @@ import com.ckr.otms.common.web.util.RestPaginationTemplate.QueryResponse;
 
 public abstract class BaseRestPaginationServiceTemplate {
 
-    //private Long maxNoRecordsPerPage = (long) 1000;
 
-    /**
-     *
-     * @param maxNoRecordsPerPage
-     * @return
-     */
+
+
     public QueryResponse<Object> query(Long maxNoRecordsPerPage) {
 
         QueryRequest request = RestPaginationTemplate.getQueryPageInfo();

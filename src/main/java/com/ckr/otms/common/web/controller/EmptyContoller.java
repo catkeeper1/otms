@@ -28,8 +28,8 @@ public class EmptyContoller {
      * This method is used for this purpose. It always return a empty array and the expiried time for the
      * response will be very long so that browser will not request this again and again.
      *
-     * @param response
-     * @return
+     * @param response a HTTP servlet response object. It is used to set the expired time
+     * @return return a response entity object that will generate a empty "{}" json response.
      */
     @RequestMapping(value = RequestPathConstant.INTERNAL_WEB_DATA + "/emptyResponse")
     @Secured(SecuriedAttribute.ATT_AUTHENTICATED)

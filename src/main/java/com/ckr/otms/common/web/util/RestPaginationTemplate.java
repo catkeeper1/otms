@@ -18,6 +18,36 @@ import java.util.List;
 import java.util.StringTokenizer;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * This is a util class that implement pagination query protocol for dojo JsonRest under Spring MVC environment.
+ * <p>This class is designed with GOF template method pattern. It extract pagination
+ * info(such as the no of pages, sorting fields, etc) from HTTP request and store this info
+ * in a {@link QueryRequest} object. Then, pass this {@link QueryRequest} object to
+ * {@link RestPaginationTemplate#doQuery()} to do real data query. Since query logic is requirement specified,
+ * {@link RestPaginationTemplate#doQuery()} is abstract and developer need to extend this
+ * class and provide implementation for {@link RestPaginationTemplate#doQuery()}.</p>
+ * <p>The {@link RestPaginationTemplate#query()} method can return a {@link ResponseEntity} object which can
+ * be used as returned value for a Spring MVC controller method. The usage of this class is similar to:</p>
+ * {@code
+        return new RestPaginationTemplate<ResultType>() {
+
+
+           protected QueryResponse<ResultType> doQuery() {
+
+               QueryResponse<ResultType> result = ...; //statement that can do real data query.
+
+               return result;
+           }
+
+       }.query();
+    }
+ * <p>Please note that this class is designed for Spring MVC only, it will not work if you use it under other
+ * environments(such as Servlet, Struts).</p>
+ *
+ * @param <R> The type of records of query result.
+ *
+ */
+
 public abstract class RestPaginationTemplate<R> {
 
     private static final Logger LOG = LoggerFactory.getLogger(RestPaginationTemplate.class);
@@ -31,7 +61,8 @@ public abstract class RestPaginationTemplate<R> {
      *
      *
      *
-     * @return
+     * @return a response entity object that can be returned by a controller to generate a
+     * proper json response for JsonRest for current query.
      *
      * @see com.ckr.otms.common.web.util.RestPaginationTemplate#doQuery()
      */
@@ -76,7 +107,7 @@ public abstract class RestPaginationTemplate<R> {
     /**
      * Th
      *
-     * @return QueryResponse<R>
+     * @return QueryResponse
      */
     protected abstract QueryResponse<R> doQuery();
 
