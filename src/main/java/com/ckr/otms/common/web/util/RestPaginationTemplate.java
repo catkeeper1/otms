@@ -60,7 +60,7 @@ public abstract class RestPaginationTemplate<R> {
      *
      *
      * @return a response entity object that can be returned by a controller to generate a
-     * proper json response for JsonRest for current query.
+     *     proper json response for JsonRest for current query.
      *
      * @see com.ckr.otms.common.web.util.RestPaginationTemplate#doQuery()
      */
@@ -166,7 +166,7 @@ public abstract class RestPaginationTemplate<R> {
         String sortByStr = webRequest.getParameter("restSortBy");
 
         if (sortByStr == null) {
-            request.setSortCriteriaList(new ArrayList<SortCriteria>());
+            request.setSortCriteriaList(new ArrayList<>());
             return request;
         }
 
@@ -175,7 +175,7 @@ public abstract class RestPaginationTemplate<R> {
 
         StringTokenizer tokenizer = new StringTokenizer(sortByStr, ",");
 
-        List<SortCriteria> sortCriteriaList = new ArrayList<SortCriteria>();
+        List<SortCriteria> sortCriteriaList = new ArrayList<>();
 
         while (tokenizer.hasMoreTokens()) {
             String criteriaStr = tokenizer.nextToken();
@@ -217,7 +217,7 @@ public abstract class RestPaginationTemplate<R> {
                 + (contentRange.getStart() + contentRange.getContent().size() - 1) + "/"
                 + contentRange.getTotal());
 
-        return new ResponseEntity<Collection<R>>(contentRange.getContent(), headerMap, HttpStatus.OK);
+        return new ResponseEntity<>(contentRange.getContent(), headerMap, HttpStatus.OK);
 
     }
 
@@ -228,7 +228,7 @@ public abstract class RestPaginationTemplate<R> {
         private Long end;
 
 
-        List<SortCriteria> sortCriteriaList = new ArrayList<SortCriteria>();
+        List<SortCriteria> sortCriteriaList = new ArrayList<>();
 
         public Long getStart() {
             return start;
