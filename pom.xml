@@ -279,13 +279,6 @@
 		
 
 		<dependency>
-            <groupId>org.jmockit</groupId>
-            <artifactId>jmockit-coverage</artifactId>
-			<version>1.23</version>
-            <scope>test</scope>
-        </dependency>
-
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
@@ -306,6 +299,12 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.0.1</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 	<build>
@@ -315,12 +314,7 @@
 
 		<plugins>
 
-			<!-- <plugin> <groupId>com.googlecode.maven-download-plugin</groupId>
-				<artifactId>download-maven-plugin</artifactId> <version>1.2.0</version> <executions> 
-				<execution> <id>download-dojo</id> <phase>generate-sources</phase> <goals> 
-				<goal>wget</goal> </goals> <configuration> <url>http://download.dojotoolkit.org/release-1.10.0/dojo-release-1.10.0.tar.gz</url> 
-				<unpack>true</unpack> <outputDirectory>${project.build.directory}/</outputDirectory> 
-				</configuration> </execution> </executions> </plugin> -->
+
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -343,7 +337,8 @@
         		<executions>
         			<!-- execute UT -->
 					<execution>
-						<!-- this ID must be "default-test". Otherwise it cannot override the setting for the default execution of maven-surefire-plugin -->
+						<!-- this ID must be "default-test". Otherwise it cannot override the setting for the default
+						execution of maven-surefire-plugin -->
 						
 						<id>default-test</id>
 						<phase>test</phase>
@@ -501,6 +496,10 @@
 
 									</else>
 								</if>
+
+								<get src="https://github.com/oria/gridx/archive/v1.3.3.tar.gz"
+									 dest="${basedir}/download_cache/gridx-1.3.3.tar.gz"
+									 skipexisting="true" verbose="true" />
 
 							</target>
 						</configuration>
@@ -690,6 +689,13 @@
 						</goals>
 					</execution>
 				</executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.robotframework</groupId>
+                        <artifactId>robotframework</artifactId>
+                        <version>3.0</version>
+                    </dependency>
+                </dependencies>
 			</plugin>
 
 			<plugin>
