@@ -18,7 +18,7 @@ public class BingLib {
 
     private WebDriver getDriver(){
         if(driver == null){
-            System.setProperty("webdriver.ie.driver","D:/IEDriverServer.exe");
+            //System.setProperty("webdriver.ie.driver","D:/IEDriverServer.exe");
             driver = new InternetExplorerDriver();
             driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         }
@@ -42,8 +42,17 @@ public class BingLib {
 
         getDriver().findElement(By.tagName("body"));
 
-        WebElement nav = getDriver().findElement(By.xpath("//nav[@role='navigation']"));
-        List<WebElement> links = nav.findElements(By.tagName("li"));
-        links.get(pageNo - 1).click();
+        List<WebElement> navs = getDriver().findElements(By.xpath("//nav[@role='navigation']"));
+        List<WebElement> links = navs.get(1).findElements(By.xpath("./ul/li/a"));
+
+        for(WebElement link : links){
+            WebElement li = link.findElement(By.tagName("i"));
+
+            if(pageNo.toString().equals(li.getText())){
+                link.click();
+                return;
+            }
+        }
+        throw new RuntimeException("cannot find page " + pageNo);
     }
 }

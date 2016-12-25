@@ -273,7 +273,7 @@
 		<dependency>
 			<groupId>org.jmockit</groupId>
 			<artifactId>jmockit</artifactId>
-			<version>1.29</version>
+			<version>1.30</version>
 			<scope>test</scope>
 		</dependency>
 		
@@ -393,7 +393,7 @@
 				<executions>
 
 					<execution>
-						<id>create_js_res</id>
+						<id>download_additional_resourse</id>
 						<phase>generate-sources</phase>
 						<configuration>
 							<target>
@@ -490,16 +490,26 @@
 											<fileset dir="${project.build.directory}/gridx_dir/gridx-1.3.3" />
 
 										</move>
-
-
-
-
 									</else>
 								</if>
 
-								<get src="https://github.com/oria/gridx/archive/v1.3.3.tar.gz"
-									 dest="${basedir}/download_cache/gridx-1.3.3.tar.gz"
+								<get src="http://selenium-release.storage.googleapis.com/2.53/IEDriverServer_Win32_2.53.1.zip"
+									 dest="${basedir}/download_cache/IEDriverServer_Win32_2.53.1.zip"
 									 skipexisting="true" verbose="true" />
+
+								<available file="${basedir}/drivers/IEDriverServer.exe"
+										   property="IE_driver_exist" type="file" />
+
+								<if>
+									<isset property="IE_driver_exist" />
+									<then>
+										<echo>IE driver is exist.</echo>
+									</then>
+									<else>
+										<unzip src="${basedir}/download_cache/IEDriverServer_Win32_2.53.1.zip"
+												dest="${basedir}/drivers/" />
+									</else>
+								</if>
 
 							</target>
 						</configuration>
@@ -684,10 +694,20 @@
 				<version>1.4.6</version>
 
                 <configuration>
+                    <libdoc></libdoc>
+                    <testdoc></testdoc>
                     <extraPathDirectories>
                         <extraPathDirectory>target/test-classes</extraPathDirectory>
-
+                        <extraPathDirectory>target/classes</extraPathDirectory>
                     </extraPathDirectories>
+
+                    <externalRunner>
+                        <jvmArgs>
+                            <jvmArg>-Dwebdriver.ie.driver=${basedir}/drivers/IEDriverServer.exe</jvmArg>
+                            <jvmArg>-Xmx512m</jvmArg>
+                        </jvmArgs>
+                    </externalRunner>
+
                 </configuration>
 				<executions>
 					<execution>

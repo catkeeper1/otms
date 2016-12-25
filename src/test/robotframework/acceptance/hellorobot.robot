@@ -11,5 +11,6 @@ My Test
 
     Open Bing
     Search         agile
+    Go To Page    2
 
 *** Keywords ***
