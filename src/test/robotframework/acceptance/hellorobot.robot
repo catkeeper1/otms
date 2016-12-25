@@ -1,5 +1,6 @@
 *** Settings ***
 Library       OperatingSystem
+Library       com.ckr.otms.keyword.BingLib
 
 *** Variables ***
 ${MESSAGE}    Hello, world!
@@ -7,6 +8,8 @@ ${MESSAGE}    Hello, world!
 *** Test Cases ***
 My Test
     [Documentation]    Example test
-    Create File    f://test.txt
+
+    Open Bing
+    Search         agile
 
 *** Keywords ***

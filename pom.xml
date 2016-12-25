@@ -682,6 +682,13 @@
 				<groupId>org.robotframework</groupId>
 				<artifactId>robotframework-maven-plugin</artifactId>
 				<version>1.4.6</version>
+
+                <configuration>
+                    <extraPathDirectories>
+                        <extraPathDirectory>target/test-classes</extraPathDirectory>
+
+                    </extraPathDirectories>
+                </configuration>
 				<executions>
 					<execution>
 						<goals>
