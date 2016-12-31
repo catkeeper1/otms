@@ -26,12 +26,13 @@ public class BingLib {
         return driver;
     }
 
-    public void openBing(){
+    public void openBingPage(){
         getDriver().get("http://www.bing.com");
     }
 
     public void search(String qwords){
         WebElement input = getDriver().findElement(By.xpath("//input[@name='q']"));
+        input.clear();
         input.sendKeys(qwords);
 
         WebElement goBtn = getDriver().findElement(By.xpath("//input[@name='go']"));
@@ -40,19 +41,28 @@ public class BingLib {
 
     public void goToPage(Integer pageNo){
 
-        getDriver().findElement(By.tagName("body"));
-
         List<WebElement> navs = getDriver().findElements(By.xpath("//nav[@role='navigation']"));
         List<WebElement> links = navs.get(1).findElements(By.xpath("./ul/li/a"));
 
         for(WebElement link : links){
-            WebElement li = link.findElement(By.tagName("i"));
 
-            if(pageNo.toString().equals(li.getText())){
+
+            if(link.getText().indexOf(pageNo.toString()) >= 0){
                 link.click();
                 return;
             }
         }
         throw new RuntimeException("cannot find page " + pageNo);
     }
+
+    public void canSeeResult(Integer from, Integer to){
+        WebElement div = getDriver().findElement(By.id("b_tween"));
+        WebElement i = div.findElement(By.xpath("//span[@class='sb_count']"));
+
+
+        if(i.getText().indexOf(from + "") == -1 || i.getText().indexOf(to + "") == -1){
+            throw new RuntimeException("cannot find search result from record " + from + " to " + to);
+        }
+    }
+
 }
