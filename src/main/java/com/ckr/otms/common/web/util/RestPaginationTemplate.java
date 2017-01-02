@@ -57,14 +57,12 @@ public abstract class RestPaginationTemplate<R> {
      * Trigger the query base on the query logic that is implemented in
      * {@link com.ckr.otms.common.web.util.RestPaginationTemplate#doQuery()}.
      *
-     *
-     *
-     * @return a response entity object that can be returned by a controller to generate a
+     * @return a response entity object that can be returned by a Spring MVC controller to generate a
      *     proper json response for JsonRest for current query.
      *
      * @see com.ckr.otms.common.web.util.RestPaginationTemplate#doQuery()
      */
-    public ResponseEntity<Collection<R>> query() {
+    public ResponseEntity<List<R>> query() {
 
         HttpServletRequest webRequest =
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -83,7 +81,7 @@ public abstract class RestPaginationTemplate<R> {
         }
 
 
-        ResponseEntity<Collection<R>> result = null;
+        ResponseEntity<List<R>> result = null;
 
         try {
             queryPagingInfo.set(queryRequest);
@@ -103,14 +101,18 @@ public abstract class RestPaginationTemplate<R> {
     }
 
     /**
-     * Th
+     * The method that implement real query logic.
+     * When this class is used, this method must be overridden to implement real query logic.
+     * In this method, query request(such as the range of records) is available. Developer can use
+     * {@link QueryRequest#getQueryPageInfo()}.
      *
-     * @return QueryResponse
+     * @return QueryResponse the raw data that will be used to generate HTTP response
+     * @see QueryResponse
      */
     protected abstract QueryResponse<R> doQuery();
 
 
-    protected QueryRequest parsePageRange(QueryRequest range, HttpServletRequest webRequest) {
+    private QueryRequest parsePageRange(QueryRequest range, HttpServletRequest webRequest) {
 
 
         Enumeration<String> rangeValues = webRequest.getHeaders("Range");
@@ -207,7 +209,7 @@ public abstract class RestPaginationTemplate<R> {
     }
 
 
-    private ResponseEntity<Collection<R>> generateResponse(QueryResponse<R> contentRange) {
+    private ResponseEntity<List<R>> generateResponse(QueryResponse<R> contentRange) {
 
 
         HttpHeaders headerMap = new HttpHeaders();
@@ -221,14 +223,36 @@ public abstract class RestPaginationTemplate<R> {
 
     }
 
-
+    /**
+     * This is used to store the query raw data(the range of records that should be returned).
+     * {@link RestPaginationTemplate} extract query data from HTTP request objects and store in a object of this
+     * class. When developers implement {@link RestPaginationTemplate#doQuery()}, they just need to get the
+     * query raw data from this class but not HTTP request so that it will not coupled with any thing in controller
+     * layer.
+     */
     public static class QueryRequest {
 
+        /**
+         * This is used to specified the range of records should be returned by the query.
+         * If start = 11 and end = 20, it means it is expected that this query should return records from
+         * 11th record to 20th record.
+         */
         private Long start;
+
+        /**
+         * This is used to specify the range of records should be returned by the query.
+         * @see QueryRequest#start
+         */
         private Long end;
 
-
-        List<SortCriteria> sortCriteriaList = new ArrayList<>();
+        /**
+         * This is used to specify how sorting should be done.
+         * Assume there are 2 records in this fields(record1 and record2). record1.isAsc = true,
+         * record1.fieldName = "abc, record2.isAsc = false, record2.fieldName = "def". It means something like:
+         * "SELECT ... FROM ... ORDER BY abc DESC, def ASC".
+         *
+         */
+        private List<SortCriteria> sortCriteriaList = new ArrayList<>();
 
         public Long getStart() {
             return start;
@@ -246,12 +270,6 @@ public abstract class RestPaginationTemplate<R> {
             this.end = end;
         }
 
-        public void addSortCriteria(boolean isAsc, String fieldName) {
-            SortCriteria criteria = new SortCriteria();
-            criteria.setAsc(isAsc);
-            criteria.setFieldName(fieldName);
-            this.sortCriteriaList.add(criteria);
-        }
 
         public List<SortCriteria> getSortCriteriaList() {
             return sortCriteriaList;
@@ -264,8 +282,18 @@ public abstract class RestPaginationTemplate<R> {
 
     }
 
+    /**
+     * This is used by the {@link QueryRequest} to store information about sorting.
+     */
     public static class SortCriteria {
+        /**
+         * Indicate sorting will be done with asc or desc. True means asc.
+         */
         private boolean isAsc;
+
+        /**
+         * the field used for sorting.
+         */
         private String fieldName;
 
         public boolean isAsc() {
@@ -287,12 +315,35 @@ public abstract class RestPaginationTemplate<R> {
 
     }
 
+    /**
+     * This is used to decouple the query result from HTTP response. Objects of this class are used to store raw data
+     * of query result. {@link RestPaginationTemplate#doQuery()} should return an instance of this class
+     * and the {@link RestPaginationTemplate#query()} will use this object to
+     * generate an response that can be returned by a Spring MVC controller method.
+     * @param <C> The data type of the records of query result.
+     */
     public static class QueryResponse<C> {
 
+        /**
+         * {@link QueryRequest#start} and {@link QueryRequest#end} is used to specify the range of records the caller
+         * want to retrieve. However, it is possible that caller want to retrieve records 100 to 110 but there is only
+         * 104 records available in total. At this moment, the {@link RestPaginationTemplate#doQuery()} should return
+         * an object with {@link QueryResponse#start} = 100, {@link QueryResponse#total} = 104 and
+         * {@link QueryResponse#content} include records from 100th record to 104th record.
+         */
         private Long start;
+
+        /**
+         * This is used to store the actual total number of available records for this query.
+         * @see QueryResponse#start
+         */
         private Long total;
 
-        private Collection<C> content;
+        /**
+         * The list of records of the query result.
+         * @see QueryResponse#start
+         */
+        private List<C> content;
 
         public Long getStart() {
             return start;
@@ -310,11 +361,11 @@ public abstract class RestPaginationTemplate<R> {
             this.total = total;
         }
 
-        public Collection<C> getContent() {
+        public List<C> getContent() {
             return content;
         }
 
-        public void setContent(Collection<C> content) {
+        public void setContent(List<C> content) {
             this.content = content;
         }
 

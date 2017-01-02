@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Collection;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -40,7 +41,7 @@ public class UserController {
 
     @RestQueryRequestMapping(value = URL)
     @Secured(SecuriedAttribute.ATT_AUTHENTICATED)
-    public ResponseEntity<Collection<UserQueryView>> queryUsers(@RequestParam("userName") final String userName, @RequestParam("userDesc") final String userDesc) {
+    public ResponseEntity<List<UserQueryView>> queryUsers(@RequestParam("userName") final String userName, @RequestParam("userDesc") final String userDesc) {
 
         return new RestPaginationTemplate<UserQueryView>() {
 

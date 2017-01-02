@@ -708,6 +708,7 @@
                         </jvmArgs>
                     </externalRunner>
 
+					<testCasesDirectory>src/test/com/ckr/otms/ft/cases/</testCasesDirectory>
                 </configuration>
 				<executions>
 					<execution>
@@ -750,7 +751,7 @@
 				</dependencies>
 			</plugin>
 
-			<plugin>
+			<!--plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.10.4</version>
@@ -768,7 +769,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin-->
 
 		</plugins>
 	</build>
@@ -822,6 +823,18 @@
 
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.4</version>
+                <configuration>
+                    <show>protected</show>
+                    <docencoding>UTF-8</docencoding>
+                    <encoding>UTF-8</encoding>
+                    <charset>UTF-8</charset>
+                </configuration>
+
+            </plugin>
 
 
 		</plugins>

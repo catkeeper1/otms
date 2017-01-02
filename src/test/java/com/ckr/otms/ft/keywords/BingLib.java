@@ -1,4 +1,4 @@
-package com.ckr.otms.keyword;
+package com.ckr.otms.ft.keywords;
 
 import com.mysql.jdbc.TimeUtil;
 import org.openqa.selenium.By;
@@ -62,6 +62,14 @@ public class BingLib {
 
         if(i.getText().indexOf(from + "") == -1 || i.getText().indexOf(to + "") == -1){
             throw new RuntimeException("cannot find search result from record " + from + " to " + to);
+        }
+
+        try {
+            //this is used for demo only. During demo, I want people can see what happen so that just
+            //stop for 2 seconds.
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
