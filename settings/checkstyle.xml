@@ -138,7 +138,10 @@
                value="GenericWhitespace ''{0}'' is not preceded with whitespace."/>
     </module>
     <module name="Indentation">
-      <!-- change basic indentation to 4, follow default setting in IDEA -->
+      <!--
+          change basic indentation to 4, follow default setting in IDEA so that all indentation is correct
+          once the codes are re-formatted.
+      -->
       <property name="basicOffset" value="4"/>
       <property name="braceAdjustment" value="0"/>
       <property name="caseIndent" value="2"/>

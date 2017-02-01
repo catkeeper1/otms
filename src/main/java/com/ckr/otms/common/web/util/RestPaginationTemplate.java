@@ -54,7 +54,7 @@ public abstract class RestPaginationTemplate<R> {
             new ThreadLocal<>();
 
     /**
-     * Trigger the query base on the query logic that is implemented in
+     * Conduct the query base on the query logic that is implemented in
      * {@link com.ckr.otms.common.web.util.RestPaginationTemplate#doQuery()}.
      *
      * @return a response entity object that can be returned by a Spring MVC controller to generate a

@@ -43,7 +43,8 @@ public class BingLib {
 
         List<WebElement> navs = getDriver().findElements(By.xpath("//nav[@role='navigation']"));
         List<WebElement> links = navs.get(1).findElements(By.xpath("./ul/li/a"));
-
+        System.out.println("*INFO* go to page " + pageNo );
+        System.out.println("*HTML* <img src=\"http://g.hiphotos.baidu.com/baike/whfpf%3D72%2C72%2C0/sign=c18f90a3aeec8a13144f04a0913ea6bd/e824b899a9014c08f8a59ce90d7b02087af4f4e4.jpg\" alt=\"机器人操作系统\"/>");
         for(WebElement link : links){
 
 
