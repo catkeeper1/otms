@@ -31,6 +31,7 @@ import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 
 public class RestPaginationTemplateTest {
@@ -42,37 +43,87 @@ public class RestPaginationTemplateTest {
     private @Mocked HttpServletRequest httpServletRequest;
 
 	@Test
-	public void testQuery(final @Mocked HttpServletRequest request){
+	public void testQuery(){
+
+        final InvokedCounter counter = new InvokedCounter();
+
+        List<RestPaginationTemplate.SortCriteria> sortCriteriaList = new ArrayList<>();
+
+        final RestPaginationTemplate<String> pageUtil = new RestPaginationTemplate<String>(){
+            @Override
+            protected QueryResponse<String> doQuery() {
+
+                counter.countInvoke("doQuery");
+
+                QueryRequest queryReq = RestPaginationTemplate.getQueryPageInfo();
+                assertThat(queryReq.getStart() , is(3L));
+                assertThat(queryReq.getEnd() , is(100L));
+
+                assertThat(queryReq.getSortCriteriaList().get(1).isAsc() , is(false));
+                assertThat(queryReq.getSortCriteriaList().get(1).getFieldName() , is("sort field 2"));
 
 
-        final RestPaginationTemplate pageUtil = new RestPaginationTemplateForTesting();
+                QueryResponse<String> result = new QueryResponse<>();
+                result.setStart(1L);
+                result.setTotal(100L);
+
+                List<String> content = new ArrayList<>();
+                for(int i = 0 ; i < 10; i++){
+                    content.add("record" + i);
+                }
+
+                result.setContent(content);
+
+                return result;
+            }
+        };
 
         final RestPaginationTemplateTest t = this;
 
         final ResponseEntity<Collection<Object>> expectedResult = new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
 
-        new Expectations(RestPaginationTemplate.class){{
+        new Expectations(){{
 
             RequestContextHolder.getRequestAttributes(); result = servletRequestAttributes;
 
             servletRequestAttributes.getRequest(); result = httpServletRequest;
 
-            invoke(pageUtil, "parsePageRange", new Class<?>[]{QueryRequest.class, HttpServletRequest.class}, (QueryRequest)any, httpServletRequest);
-            times = 1;
-
-            invoke(pageUtil,"parseSortBy", new Class<?>[]{QueryRequest.class, HttpServletRequest.class}, (QueryRequest)any, httpServletRequest);
-            times = 1;
-
-            invoke(pageUtil, "generateResponse", new Class<?>[]{QueryResponse.class}, ((QueryResponse) any)) ;
-            result = expectedResult;
-
         }};
 
+        new MockUp<RestPaginationTemplate>() {
+            @Mock QueryRequest parsePageRange(QueryRequest range, HttpServletRequest webRequest) {
+                range.setStart(3L);
+                range.setEnd(100L);
 
-        ResponseEntity<Collection<Object>> testResult = pageUtil.query();
+                return range;
+            }
 
-        assertThat(testResult , sameInstance(expectedResult));
-		
+            @Mock QueryRequest parseSortBy(QueryRequest request, HttpServletRequest webRequest) {
+
+                List<RestPaginationTemplate.SortCriteria> sortCriteriaList = new ArrayList<>();
+                RestPaginationTemplate.SortCriteria criteria = new RestPaginationTemplate.SortCriteria();
+                criteria.setAsc(true);
+                criteria.setFieldName("sort field 1");
+                sortCriteriaList.add(criteria);
+                criteria = new RestPaginationTemplate.SortCriteria();
+                criteria.setAsc(false);
+                criteria.setFieldName("sort field 2");
+                sortCriteriaList.add(criteria);
+
+                request.setSortCriteriaList(sortCriteriaList);
+
+                return request;
+            }
+        };
+
+        ResponseEntity<List<String>> testResult = pageUtil.query();
+        assertThat("doQuery is not invoked", counter.getInvokeCount("doQuery"), is(1));
+
+        assertThat(testResult.getStatusCode() , is(HttpStatus.OK) );
+
+        assertThat(testResult.getHeaders().get("Content-Range").get(0) , is("items " + 1 + "-" + 10 + "/" + 100) );
+
+        assertThat(testResult.getBody().get(4), is(("record" + 4)));
 
 	}
 

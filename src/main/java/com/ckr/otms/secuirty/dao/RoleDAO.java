@@ -5,11 +5,11 @@ import java.util.List;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.ckr.otms.common.dao.BaseDAO;
+import com.ckr.otms.common.dao.BaseDao;
 import com.ckr.otms.secuirty.valueobject.Role;
 
 @Repository
-public class RoleDAO extends BaseDAO{
+public class RoleDao extends BaseDao {
 
     public List<Role> getAllRoles(){
 	    Query<?> query = sessionFactory.getCurrentSession().createQuery("from Role");

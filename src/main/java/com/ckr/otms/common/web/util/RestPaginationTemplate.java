@@ -163,7 +163,7 @@ public abstract class RestPaginationTemplate<R> {
     }
 
 
-    protected QueryRequest parseSortBy(QueryRequest request, HttpServletRequest webRequest) {
+    private QueryRequest parseSortBy(QueryRequest request, HttpServletRequest webRequest) {
 
         String sortByStr = webRequest.getParameter("restSortBy");
 

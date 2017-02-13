@@ -2,66 +2,64 @@ package com.ckr.otms.secuirty.valueobject;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-@Entity(name="Role")
-@Table(name="ROLE")
-public class Role implements Serializable{
+@Entity(name = "Role")
+@Table(name = "ROLE")
+public class Role implements Serializable {
 
-	private static final long serialVersionUID = 4939126105741432131L;
+    private static final long serialVersionUID = 4939126105741432131L;
 
-	private String roleCode;
-	
-	private String parentRoleCode;
-	
-	private String roleDescription;
-	
-	private Timestamp lastModifiedTimestamp;
+    private String roleCode;
 
-	@Id
-	@Column(name = "ROLE_CODE", unique = true, nullable = false, length = 100)
-	public String getRoleCode() {
-		return roleCode;
-	}
+    private String parentRoleCode;
 
-	public void setRoleCode(String roleCode) {
-		this.roleCode = roleCode;
-	}
-	
-	
-	@Column(name = "PARENT_ROLE_CODE")
-	public String getParentRoleCode() {
-		return parentRoleCode;
-	}
+    private String roleDescription;
 
-	public void setParentRoleCode(String parentRoleCode) {
-		this.parentRoleCode = parentRoleCode;
-	}
+    private Timestamp lastModifiedTimestamp;
 
-	@Column(name = "ROLE_DESCRIPTION")
-	public String getRoleDescription() {
-		return roleDescription;
-	}
+    @Id
+    @Column(name = "ROLE_CODE", unique = true, nullable = false, length = 100)
+    public String getRoleCode() {
+        return roleCode;
+    }
 
-	public void setRoleDescription(String roleDescription) {
-		this.roleDescription = roleDescription;
-	}
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
+    }
 
-	@Version
-	@Column(name = "LAST_MODIFIED_TIMESTAMP")
-	public Timestamp getLastModifiedTimestamp() {
-		return lastModifiedTimestamp;
-	}
 
-	public void setLastModifiedTimestamp(Timestamp lastModifiedTimestamp) {
-		this.lastModifiedTimestamp = lastModifiedTimestamp;
-	}
-	
-	
+    @Column(name = "PARENT_ROLE_CODE")
+    public String getParentRoleCode() {
+        return parentRoleCode;
+    }
+
+    public void setParentRoleCode(String parentRoleCode) {
+        this.parentRoleCode = parentRoleCode;
+    }
+
+    @Column(name = "ROLE_DESCRIPTION")
+    public String getRoleDescription() {
+        return roleDescription;
+    }
+
+    public void setRoleDescription(String roleDescription) {
+        this.roleDescription = roleDescription;
+    }
+
+    @Version
+    @Column(name = "LAST_MODIFIED_TIMESTAMP")
+    public Timestamp getLastModifiedTimestamp() {
+        return lastModifiedTimestamp;
+    }
+
+    public void setLastModifiedTimestamp(Timestamp lastModifiedTimestamp) {
+        this.lastModifiedTimestamp = lastModifiedTimestamp;
+    }
+
 
 }

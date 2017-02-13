@@ -6,8 +6,8 @@ import com.ckr.otms.common.bo.HibernateRestPaginationService;
 import com.ckr.otms.common.util.StringUtil;
 import com.ckr.otms.common.web.util.RestPaginationTemplate.QueryResponse;
 import com.ckr.otms.exception.ApplicationException;
-import com.ckr.otms.secuirty.dao.RoleDAO;
-import com.ckr.otms.secuirty.dao.UserDAO;
+import com.ckr.otms.secuirty.dao.RoleDao;
+import com.ckr.otms.secuirty.dao.UserDao;
 import com.ckr.otms.secuirty.valueobject.Role;
 import com.ckr.otms.secuirty.valueobject.User;
 import com.ckr.otms.secuirty.valueobject.UserDetailView;
@@ -38,10 +38,10 @@ public class UserService {
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
-    private UserDAO userDAO;
+    private UserDao userDAO;
 
     @Autowired
-    private RoleDAO roleDAO;
+    private RoleDao roleDAO;
 
     @Autowired
     @Qualifier("restPaginationService")

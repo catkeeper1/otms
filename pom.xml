@@ -352,7 +352,7 @@
 								<coverage-output>html</coverage-output>
 								<coverage-metrics>line</coverage-metrics>
 								<coverage-srcDirs>${project.basedir}/src/main/java</coverage-srcDirs>
-                                <coverage-classes>loaded</coverage-classes>
+                                <coverage-classes>com.ckr.otms.*</coverage-classes>
 							</systemPropertyVariables>
 
 						</configuration>

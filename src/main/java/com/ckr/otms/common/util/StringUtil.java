@@ -1,17 +1,18 @@
 package com.ckr.otms.common.util;
 
+/**
+ * An util class for String objects processing.
+ */
 public class StringUtil {
-	public static boolean isNull(String str){
-		
-		if(str == null){
-			return true;
-		}
-		
-		if(str.length() == 0){
-			return true;
-		}
-		
-		return false;
-		
-	}
+
+    /**
+     * Check if an string is "null".
+     * @param str The string that is checked.
+     * @return return true if str is null or it equals to "". Otherwise, return false.
+     */
+    public static boolean isNull(String str) {
+
+        return (str == null || str.length() == 0);
+
+    }
 }

@@ -1,5 +1,8 @@
 package com.ckr.otms.common.util;
 
+/**
+ * An util class that handle Integer object processing.
+ */
 public class IntegerUtil {
 
     /**
