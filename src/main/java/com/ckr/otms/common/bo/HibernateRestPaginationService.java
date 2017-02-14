@@ -226,9 +226,7 @@ public class HibernateRestPaginationService {
             return;
         }
 
-        params.entrySet()
-                .stream()
-                .forEach(e -> query.setParameter(e.getKey(), e.getValue()));
+        params.entrySet().forEach(e -> query.setParameter(e.getKey(), e.getValue()));
 
     }
 

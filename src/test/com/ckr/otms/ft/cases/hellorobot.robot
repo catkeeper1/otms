@@ -15,9 +15,9 @@ My Test
     Go to page    3
     User can see searching result from record 21 to record 30
 
-    使用关键字"scrum"进行搜索
+    使用关键字"scrum A"进行搜索
     Go to page    4
-    User can see searching result from record 31 to record 40
+    User can see searching result from record 31 to record 45
     Go to page    6
     User can see searching result from record 51 to record 60
 
